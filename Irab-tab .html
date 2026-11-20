@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><title>تاب الإعراب</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&family=Lalezar&display=swap">
+<style>
+:root{
+  --bg:#eef1fb; --panel:#ffffff; --panel2:#e3e8f7; --ink:#1b1746; --ink2:#5a5f86; --line:#c9d0ea;
+  --purple:#2b1565; --purple-ink:#ffffff; --gold:#ffd23f; --gold-ink:#2b2100; --sky:#25b4f5; --sky-ink:#032a40;
+  --paper:#ffffff; --paper-ink:#1b1746; --navy:#1767a8; --good:#17a34a; --bad:#e23d4b; --glow:#ff7a1a;
+  --teamA:#e8573d; --teamB:#0f9d8a;
+  --font:'Cairo','Segoe UI',Tahoma,sans-serif; --display:'Lalezar','Cairo',sans-serif;
+  --zoom:1;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1230; --panel:#161d47; --panel2:#1d2658; --ink:#f2f4ff; --ink2:#a9b0dc; --line:#323c7a;
+  --paper:#f7f8ff; --navy:#1d7cc7; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1230; --panel:#161d47; --panel2:#1d2658; --ink:#f2f4ff; --ink2:#a9b0dc; --line:#323c7a;
+  --paper:#f7f8ff; --navy:#1d7cc7; color-scheme:dark}
+*{box-sizing:border-box}
+html{font-size:calc(var(--zoom) * clamp(11px, .85vw, 21px))}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:600;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:.6rem}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+.app{display:grid;gap:.7rem;max-width:2000px;margin:auto}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;justify-content:space-between}
+.brand{display:flex;align-items:baseline;gap:.7rem}
+.brand h1{margin:0;font:400 2.6rem/1 var(--display);color:var(--purple)}
+:root[data-theme="dark"] .brand h1{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand h1{color:var(--gold)}}
+.brand span{color:var(--ink2);font-size:1rem}
+.brand .by{background:var(--gold);color:var(--gold-ink);border-radius:999px;padding:.2rem .9rem;font-size:1.05rem}
+.brand .by b{font-weight:900}
+.seg{display:flex;background:var(--panel2);border-radius:999px;padding:.25rem;gap:.2rem}
+.seg button{border:0;background:none;padding:.45rem 1.3rem;border-radius:999px;font-size:1.15rem;font-weight:800}
+.seg button[aria-pressed="true"]{background:var(--purple);color:#fff}
+.tools{display:flex;gap:.4rem;align-items:center}
+.ib{border:2px solid var(--line);background:var(--panel);border-radius:.7rem;min-width:2.6rem;height:2.6rem;font-size:1.05rem;font-weight:800;padding:0 .6rem}
+.ib[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+.board{background:var(--panel);border:3px solid var(--navy);border-radius:1.2rem;padding:.8rem 1rem 1rem;min-height:15rem}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+.nav{display:flex;align-items:center;gap:.5rem;font-size:1.1rem}
+.nav .ib{font-size:1.3rem}
+.ask{color:var(--ink2);font-size:1.1rem}
+.words{display:flex;flex-wrap:wrap;gap:1rem .9rem;justify-content:flex-start}
+.col{display:flex;flex-direction:column;align-items:center;gap:.5rem;min-width:8.5rem;padding:.5rem .6rem;border-radius:1rem;border:3px solid transparent}
+.col.active{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);animation:pulse 1.6s ease-in-out infinite}
+.col.done .word{color:var(--good)}
+.word{font-size:2.7rem;font-weight:900;line-height:1.5;white-space:nowrap}
+.word .u{border-radius:.4rem;padding:0 .05em}
+.word .u.cur{background:var(--gold);color:var(--gold-ink)}
+.tracks{display:flex;gap:.5rem;align-items:flex-start}
+.track{display:flex;flex-direction:column;gap:.3rem;min-width:7.6rem}
+.slot{height:2.4rem;border:2px dashed var(--line);border-radius:.5rem;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.slot.open{border-color:var(--glow)}
+.pc{border:0;border-radius:.55rem;font-weight:800;line-height:1.15;text-align:center}
+.pc.fn{background:var(--purple);color:var(--purple-ink)}
+.pc.st{background:var(--sky);color:var(--sky-ink)}
+.pc.sg{background:var(--paper);color:var(--paper-ink);border:2px solid var(--line)}
+.slot .pc{width:100%;height:100%;font-size:1.15rem;padding:0 .3rem;animation:pop .35s}
+.tray{background:var(--panel);border:3px solid var(--navy);border-radius:1.2rem;padding:.7rem .9rem 1rem}
+.tabs{display:flex;gap:.5rem;margin-bottom:.7rem}
+.tabs button{border:0;background:var(--navy);color:#fff;font:400 1.6rem/1 var(--display);padding:.5rem 2rem;border-radius:.8rem .8rem 0 0;opacity:.6}
+.tabs button[aria-selected="true"]{opacity:1;box-shadow:0 .25rem 0 var(--gold)}
+.tabs button.flash{animation:flash .5s 4}
+.sect{display:none}.sect.on{display:flex;gap:.8rem;flex-wrap:wrap;align-items:flex-start}
+.grp{display:flex;flex-direction:column;gap:.4rem;flex:1 1 14rem;min-width:0}
+.gt{background:var(--gold);color:var(--gold-ink);border-radius:.5rem;text-align:center;font-size:1.3rem;font-weight:900;padding:.25rem}
+.gt.pu{background:var(--purple);color:#fff}
+.gt.mbt{background:#d6336c;color:#fff}
+.mmb{display:contents}
+.pc.fn.mb{background:#d6336c;color:#fff}
+.pc.st.mb{background:#f783ac;color:#3b0a1f}
+.pc.sg.mb{background:#fff0f6;color:#7a1038;border:2px solid #f783ac}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.4rem}
+[hidden]{display:none!important}
+.col.clause{border-style:dashed;border-color:var(--line)}
+.col.clause.active{border-color:var(--gold)}
+.col.clause .word{font-size:1.5rem;white-space:normal;max-width:15rem;text-align:center;line-height:1.7}
+.btn-p{padding:.55rem .3rem;font-size:1.25rem;min-height:2.7rem}
+.btn-p.sm{font-size:1.05rem}
+.btn-p:hover{filter:brightness(1.12)}
+.btn-p.shake{animation:shake .4s;outline:3px solid var(--bad)}
+.btn-p.glow{animation:glow .7s infinite alternate}
+.btn-p.strong{animation:glow .35s infinite alternate;outline:4px solid var(--glow)}
+.clue{background:var(--gold);color:var(--gold-ink);border-radius:.5rem;font-size:.82rem;line-height:1.25;padding:.3rem .35rem;text-align:center;font-weight:800;display:flex;align-items:center;justify-content:center}
+.signs{display:grid;gap:.4rem;grid-auto-flow:column;grid-auto-columns:1fr}
+.signcell{display:flex;flex-direction:column;gap:.3rem}
+.vrow{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;align-items:stretch}
+.vgrid{display:grid;gap:.4rem}
+.vblock{background:var(--panel2);border-radius:.8rem;padding:.5rem;display:flex;flex-direction:column;gap:.4rem;flex:1 1 20rem;min-width:0}
+.ctl{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:space-between}
+.flashbtn{border:0;background:var(--glow);color:#fff;border-radius:999px;padding:.6rem 1.5rem;font-size:1.3rem;font-weight:900;display:flex;gap:.5rem;align-items:center}
+.hint{flex:1 1 20rem;background:var(--panel2);border-radius:.9rem;padding:.55rem 1rem;font-size:1.25rem;min-height:3rem;display:flex;align-items:center}
+.teams{display:flex;gap:.5rem}
+.team{border:3px solid var(--line);background:var(--panel);border-radius:.9rem;padding:.3rem .8rem;display:flex;gap:.6rem;align-items:center;font-size:1.1rem}
+.team b{font-size:1.7rem;font-variant-numeric:tabular-nums}
+.team.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 30%,transparent)}
+.team i{width:.9rem;height:.9rem;border-radius:50%;background:var(--c)}
+.team .pm{border:0;background:var(--panel2);border-radius:.4rem;width:1.6rem;height:1.6rem;font-weight:900;padding:0}
+.modal{position:fixed;inset:0;background:rgba(8,10,35,.72);display:none;align-items:center;justify-content:center;padding:1rem;z-index:20}
+.modal.on{display:flex}
+.card{background:var(--panel);border:4px solid var(--gold);border-radius:1.4rem;max-width:min(60rem,100%);max-height:92vh;overflow:auto;padding:1.2rem 1.6rem;display:grid;gap:.8rem}
+.card h2{margin:0;font:400 2.6rem var(--display);color:var(--good)}
+.stars{font-size:2.4rem;letter-spacing:.2rem;color:var(--gold)}
+.res{display:grid;gap:.4rem;font-size:1.5rem}
+.res div{background:var(--panel2);border-radius:.7rem;padding:.4rem .9rem}
+.res b{color:var(--purple);font-weight:900}
+:root[data-theme="dark"] .res b{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .res b{color:var(--gold)}}
+.go{border:0;background:var(--purple);color:#fff;border-radius:.9rem;padding:.7rem 1.4rem;font-size:1.4rem;font-weight:900}
+.go.alt{background:var(--panel2);color:var(--ink)}
+.rowb{display:flex;gap:.6rem;flex-wrap:wrap}
+.pop{position:absolute;inset:0;pointer-events:none}
+.set{position:absolute;background:var(--panel);border:2px solid var(--line);border-radius:.9rem;padding:.7rem;display:none;gap:.5rem;flex-direction:column;z-index:10;font-size:1rem;min-width:14rem}
+.set.on{display:flex}.set label{display:flex;gap:.5rem;align-items:center}
+.fly{position:fixed;z-index:30;pointer-events:none}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes glow{from{box-shadow:0 0 0 0 var(--glow);filter:brightness(1)}to{box-shadow:0 0 1.2rem .4rem var(--glow);filter:brightness(1.25)}}
+@keyframes pulse{50%{box-shadow:0 0 1.4rem 0 color-mix(in srgb,var(--gold) 60%,transparent)}}
+@keyframes flash{50%{background:var(--glow)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@media (max-width:700px){.word{font-size:2rem}.cols2{grid-template-columns:1fr 1fr}.brand h1{font-size:2rem}}
+
+.edc{width:min(72rem,100%);gap:.7rem}
+.edc h2{color:var(--purple)}
+:root[data-theme="dark"] .edc h2{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .edc h2{color:var(--gold)}}
+.edc textarea{width:100%;font:800 1.7rem/1.6 var(--font);background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:.8rem;padding:.5rem .8rem;resize:vertical;min-height:4.2rem}
+.edc small,.edc .note{color:var(--ink2);font-size:1rem;font-weight:600}
+.urow{background:var(--panel2);border-radius:.9rem;padding:.6rem .8rem;display:grid;gap:.4rem}
+.urow .uw{font-size:2rem;font-weight:900}
+.ctrls{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.ctrls label{display:flex;flex-direction:column;gap:.15rem;font-size:.85rem;color:var(--ink2)}
+.ctrls select{font:700 1.05rem var(--font);background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:.6rem;padding:.3rem .5rem;max-width:15rem}
+.ust{font-size:1.15rem;display:grid;gap:.15rem}
+.ust .ok{color:var(--good)}.ust .er{color:var(--bad)}.ust .wn{color:#b7791f}
+:root[data-theme="dark"] .ust .wn{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ust .wn{color:var(--gold)}}
+.saved{display:flex;flex-wrap:wrap;gap:.4rem}
+.saved span{background:var(--panel2);border-radius:.6rem;padding:.2rem .3rem .2rem .7rem;display:flex;gap:.5rem;align-items:center;font-size:1.1rem}
+.saved button{border:0;background:var(--bad);color:#fff;border-radius:.4rem;width:1.5rem;height:1.5rem;padding:0;font-weight:900}
+.empty{font-size:1.5rem;color:var(--ink2);padding:1.5rem}
+.board{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr;column-gap:1rem}
+.board>.bar,.board>.words{grid-column:1}
+.board>.words{align-content:flex-start}
+.tbox{grid-column:2;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:1rem;min-width:19rem;padding:1rem 1.2rem;border:4px solid var(--gold);border-radius:1.2rem;background:var(--panel2)}
+.timer{border:0;background:none;padding:0;font:900 7rem/1 var(--font);font-variant-numeric:tabular-nums;text-align:center;direction:ltr}
+.tmb{border:0;background:var(--good);color:#fff;border-radius:999px;padding:1rem 1.5rem;font-size:2.2rem;font-weight:900;width:100%}
+.tbox:has(.timer.low){border-color:var(--bad);animation:pulse 1s infinite}
+.timer.low{color:var(--bad)}
+@media (max-width:900px){.board{grid-template-columns:1fr;grid-template-rows:auto}.board>.bar,.board>.words,.tbox{grid-column:1;grid-row:auto}.tbox{flex-direction:row;min-width:0;order:-1;margin-bottom:.6rem}.timer{font-size:3.4rem;flex:1}.tmb{width:auto;font-size:1.3rem;padding:.7rem 1.3rem}}
+canvas#conf{position:fixed;inset:0;pointer-events:none;z-index:25}
+</style>
+<div class="app" id="app" dir="rtl">
+  <header class="top">
+    <div class="brand"><h1>تاب الإعراب</h1><span>العب • تعلّم • اكتشف</span><span class="by"><b>صلاح التلميذ MC</b></span></div>
+    <div class="seg" id="lvseg" role="group" aria-label="المستوى">
+      <button data-lv="1" aria-pressed="true">ابتدائي</button><button data-lv="2" aria-pressed="false">إعدادي</button><button data-lv="3" aria-pressed="false">ثانوي</button><button data-lv="4" aria-pressed="false">جملي</button>
+    </div>
+    <div class="tools" style="position:relative">
+      <button class="ib" id="bEd" style="background:var(--purple);color:#fff;border-color:var(--purple)">+ جملتي</button>
+      <button class="ib" id="bChal" aria-pressed="false" title="وضع التحدي">تحدٍّ</button>
+      <button class="ib" id="bSnd" aria-pressed="true" title="الصوت">صوت</button>
+      <button class="ib" id="bZm" title="تكبير الخط">A+</button><button class="ib" id="bZl" title="تصغير الخط">A−</button>
+      <button class="ib" id="bTheme" title="سبورة فاتحة/داكنة">ثيم</button>
+      <button class="ib" id="bFs" title="ملء الشاشة">شاشة كاملة</button>
+    </div>
+  </header>
+  <section class="board" aria-label="سبورة الجملة">
+    <div class="bar"><div class="nav"><button class="ib" id="bPrev" aria-label="الجملة السابقة">›</button><span id="sNo"></span><button class="ib" id="bNext" aria-label="الجملة التالية">‹</button><button class="ib" id="bReset">إعادة</button></div><div class="ask" id="ask">اضغطوا القطع المناسبة لإعراب الكلمة المضيئة</div></div><div class="tbox"><div class="timer" id="tm" aria-label="الوقت المتبقي">01:20</div><button class="tmb" id="bTm">ابدأ</button></div>
+    <div class="words" id="words"></div>
+  </section>
+  <section class="ctl">
+    <button class="flashbtn" id="bFlash"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>ومضة <small id="fl"></small></button>
+    <div class="hint" id="hint">الومضة تلمّح لكم بالقطعة المناسبة، وكل ومضة تخصم نقطة.</div>
+    <div class="teams" id="teams"></div>
+  </section>
+  <section class="tray" aria-label="قطع الإعراب">
+    <div class="tabs" role="tablist" id="tabs"><button role="tab" data-t="n">الاسم</button><button role="tab" data-t="v">الفعل</button><button role="tab" data-t="h">الحرف</button></div>
+    <div id="sn" class="sect"></div><div id="sv" class="sect"></div><div id="sh" class="sect"></div>
+  </section>
+</div>
+<div class="modal" id="modal"><div class="card" dir="rtl"><h2 id="mT">أحسنتم!</h2><div class="stars" id="mS"></div><div class="res" id="mR"></div><div class="rowb"><button class="go" id="mNext">الجملة التالية</button><button class="go alt" id="mAgain">أعيدوا المحاولة</button><button class="go alt" id="mClose">إغلاق</button></div></div></div>
+<div class="modal" id="ed"><div class="card edc" dir="rtl"><h2>ورشة الجمل: أضيفوا جملتكم</h2>
+<div class="note">اكتب الجملة بالتشكيل وبين الكلمات مسافة. إذا اتصل بالكلمة ضمير أو تاء فافصل جزأيها بالرمز | مثل: كَتَبْ|تُ</div>
+<textarea id="edIn" placeholder="مثال: كَتَبَ الطَّالِبُ الدَّرْسَ" aria-label="الجملة"></textarea>
+<div class="rowb"><button class="go" id="edSplit">قسّم إلى كلمات</button></div>
+<div id="edRows" style="display:grid;gap:.6rem"></div>
+<div id="edSum" class="res"></div>
+<div class="rowb"><button class="go" id="edSave" style="display:none">احفظ والعب بها</button><button class="go alt" id="edClose">إغلاق</button></div>
+<div><b>جملي المحفوظة</b><div class="saved" id="edSaved"></div></div></div></div>
+<canvas id="conf"></canvas>
+
+<script>
+const PIECES = {};
+function addP(id, cls, label, say, extra) { PIECES[id] = Object.assign({ id, cls, label, say: say || label }, extra || {}); }
+
+const FN_RAF = [
+  ['mubtada','مبتدأ'],['khabar','خبر'],['mubtada2','مبتدأ ثانٍ'],['khabar_m2','خبر (م.ث)','خبر المبتدأ الثاني'],
+  ['tawkid_lafzi','توكيد لفظي'],['nat','نعت'],['matuf','معطوف'],['badal','بدل'],
+  ['ism_nasikh','اسم الفعل الناسخ'],['khabar_harf','خبر الحرف الناسخ'],['fail','فاعل'],['naib','نائب فاعل'],
+  ['tawkid_manawi','توكيد معنوي'],['nat2','نعت ثانٍ']];
+const FN_NASB = [
+  ['maful_bih','مفعول به'],['maful_bih2','مفعول به ثانٍ'],['maful_ajlih','مفعول لأجله'],['maful_mutlaq','مفعول مطلق'],
+  ['zarf_zaman','ظرف زمان'],['tawkid_lafzi','توكيد لفظي'],['nat','نعت'],['matuf','معطوف'],
+  ['tamyiz','تمييز'],['ism_harf','اسم الحرف الناسخ'],['khabar_fil','خبر الفعل الناسخ'],['hal','حال'],
+  ['zarf_makan','ظرف مكان'],['tawkid_manawi','توكيد معنوي'],['nat2','نعت ثانٍ'],['badal','بدل'],['munada','منادى'],['mustathna','مستثنى']];
+const FN_JARR = [
+  ['ism_majrur','اسم مجرور'],['mudaf_ilayh','مضاف إليه'],['tamyiz','تمييز'],['nat','نعت'],
+  ['badal','بدل'],['matuf','معطوف'],['tawkid_lafzi','توكيد لفظي'],['tawkid_manawi','توكيد معنوي'],['nat2','نعت ثانٍ']];
+FN_RAF.forEach(f => addP('raf.' + f[0], 'fn', f[1], f[2], { grp: 'raf' }));
+FN_NASB.forEach(f => addP('nasb.' + f[0], 'fn', f[1], f[2], { grp: 'nasb' }));
+FN_JARR.forEach(f => addP('jarr.' + f[0], 'fn', f[1], f[2], { grp: 'jarr' }));
+PIECES['jarr.ism_majrur'].say = 'اسم';
+
+addP('hd.raf', 'st', 'مرفوع وعلامة رفعه', 'مرفوع وعلامة رفعه', { grp: 'raf' });
+addP('hd.nasb', 'st', 'منصوب وعلامة نصبه', 'منصوب وعلامة نصبه', { grp: 'nasb' });
+addP('hd.jarr', 'st', 'مجرور وعلامة جره', 'مجرور وعلامة جره', { grp: 'jarr' });
+
+const NOUN_SIGNS = {
+  raf: [['damma','الضمة',['mufrad','taksir','jfs'],'المفرد / جمع التكسير / جمع مؤنث سالم'],
+        ['alif','الألف',['mothanna'],'المثنى'],
+        ['waw','الواو',['jms','khamsa'],'جمع مذكر سالم / الأسماء الخمسة']],
+  nasb: [['fatha','الفتحة',['mufrad','taksir'],'المفرد / جمع التكسير'],
+         ['ya','الياء',['mothanna','jms'],'المثنى / جمع مذكر سالم'],
+         ['alif','الألف',['khamsa'],'الأسماء الخمسة'],
+         ['kasra','الكسرة',['jfs'],'جمع مؤنث سالم']],
+  jarr: [['kasra','الكسرة',['mufrad','taksir','jfs'],'المفرد / جمع التكسير / جمع مؤنث سالم'],
+         ['ya','الياء',['mothanna','jms','khamsa'],'المثنى / جمع مذكر سالم / الأسماء الخمسة'],
+         ['fatha','الفتحة',['mamnu'],'الممنوع من الصرف']]
+};
+Object.keys(NOUN_SIGNS).forEach(g => NOUN_SIGNS[g].forEach(s => addP('sg.' + g + '.' + s[0], 'sg', s[1], s[1], { grp: g, ok: s[2], clue: s[3] })));
+const M_LABEL = { mufrad:'مفرد', taksir:'جمع تكسير', jfs:'جمع مؤنث سالم', mothanna:'مثنى', jms:'جمع مذكر سالم', khamsa:'من الأسماء الخمسة', mamnu:'ممنوع من الصرف' };
+
+[['ishara','اسم إشارة'],['mawsul','اسم موصول'],['shart','اسم شرط'],['mattasil','ضمير متصل'],
+ ['munfasil','ضمير منفصل'],['mustatir','ضمير مستتر'],['istifham','اسم استفهام'],['zarf','ظرف']]
+  .forEach(k => addP('mb.' + k[0], 'fn', k[1], k[1], { grp: 'mb' }));
+addP('st.mahal', 'st', 'مبني في محل', 'مبني في محل', { grp: 'mb' });
+[['raf','رفع'],['nasb','نصب'],['jarr','جر']].forEach(c => addP('sg.mahal.' + c[0], 'sg', c[1], c[1], { grp: 'mb' }));
+
+addP('vb.madi', 'fn', 'فعل ماضٍ', 'فعل ماضٍ', { grp: 'vb' });
+addP('vb.mudari', 'fn', 'فعل مضارع', 'فعل مضارع', { grp: 'vb' });
+addP('vb.amr', 'fn', 'فعل أمر', 'فعل أمر', { grp: 'vb' });
+addP('st.madi', 'st', 'مبني على', 'مبني على', { grp: 'vb' });
+addP('st.mudari_mabni', 'st', 'مبني على', 'مبني على', { grp: 'vb' });
+addP('st.amr', 'st', 'مبني على', 'مبني على', { grp: 'vb' });
+addP('st.raf_bi', 'st', 'مرفوع بالـ', 'مرفوع ب', { grp: 'vb' });
+addP('st.nasb_bi', 'st', 'منصوب بالـ', 'منصوب ب', { grp: 'vb' });
+addP('st.jazm_bi', 'st', 'مجزوم بالـ', 'مجزوم ب', { grp: 'vb' });
+const VERB_SIGNS = {
+  madi: [['sukun','السكون','إذا اتصل بـ (نا الفاعلين / تاء الفاعل / نون النسوة)',['taa','naa','niswa']],
+         ['fath','الفتح','إذا اتصل بـ (تاء التأنيث / ألف الاثنين) وإذا كان صحيح الآخر',['taneeth','ithnayn','sahih']],
+         ['dam','الضم','إذا اتصل بـ (واو الجماعة)',['jamaa']],
+         ['fath_muq','الفتح المقدر','إذا كان معتل الآخر بالألف',['illa_alif']]],
+  raf:  [['damma','الضمة','إذا دل على مفرد وصحيح الآخر',['sahih']],
+         ['thubut','ثبوت النون','إذا كان من الأفعال الخمسة',['khamsa']]],
+  nasb: [['fatha','الفتحة','إذا دل على مفرد وصحيح الآخر',['sahih']],
+         ['hadhf_noon','حذف النون','إذا كان من الأفعال الخمسة',['khamsa']]],
+  jazm: [['sukun','السكون','إذا دل على مفرد وصحيح الآخر',['sahih']],
+         ['hadhf_noon','حذف النون','إذا كان من الأفعال الخمسة',['khamsa']],
+         ['hadhf_illa','حذف العلة','إذا كان معتل الآخر',['illa']]],
+  mudari_mabni: [['sukun','السكون','إذا اتصل بـ (نون النسوة)',['niswa']],
+                 ['fath','الفتح','إذا اتصل بـ (نون التوكيد)',['tawkeed']]],
+  amr: [['hadhf_noon','حذف النون','إذا كان من الأفعال الخمسة',['khamsa']],
+        ['hadhf_illa','حذف العلة','إذا كان معتل الآخر',['illa']],
+        ['sukun','السكون','إذا اتصل بـ (نون النسوة - نا المفعولين - هاء الغيبة) وإذا كان صحيح الآخر',['niswa','naa_obj','haa','sahih']],
+        ['fath','الفتح','إذا اتصل بـ (نون التوكيد)',['tawkeed']]]
+};
+Object.keys(VERB_SIGNS).forEach(g => VERB_SIGNS[g].forEach(s => addP('sv.' + g + '.' + s[0], 'sg', s[1], s[1], { grp: 'vb', vg: g, clue: s[2], ok: s[3] })));
+const C_LABEL = { taa:'اتصل بتاء الفاعل', naa:'اتصل بنا الفاعلين', niswa:'اتصل بنون النسوة', taneeth:'اتصل بتاء التأنيث', ithnayn:'اتصل بألف الاثنين',
+  sahih:'صحيح الآخر ومفرد', jamaa:'اتصل بواو الجماعة', khamsa:'من الأفعال الخمسة', illa:'معتل الآخر', tawkeed:'اتصل بنون التوكيد', illa_alif:'معتل الآخر بالألف', naa_obj:'اتصل بنا المفعولين', haa:'اتصل بهاء الغيبة' };
+
+[['nasikh','حرف ناسخ'],['atf','حرف عطف'],['jarr','حرف جر'],['nasb','حرف نصب'],['jazm','حرف جزم'],['istifham','حرف استفهام'],['nafy','حرف نفي'],['nida','حرف نداء'],['istithna','حرف استثناء']]
+  .forEach(k => addP('hf.' + k[0], 'fn', k[1], k[1], { grp: 'hf' }));
+addP('hf.mabni', 'st', 'مبني', 'مبني', { grp: 'hf' });
+addP('hf.nomahal', 'sg', 'لا محل له من الإعراب', 'لا محل له من الإعراب', { grp: 'hf' });
+
+/* ---- الجملة وشبه الجملة (في محل / لا محل) ---- */
+const CL_TYPES = [['ismiya','جملة اسمية'],['filiya','جملة فعلية'],['shibh','شبه جملة']];
+const CL_FN = [['khabar','خبر'],['khabar_muq','خبر مقدم'],['khabar_inna_muq','خبر إنّ مقدم'],['khabar_harf','خبر الحرف الناسخ'],['nat','نعت'],['hal','حال']];
+CL_TYPES.forEach(k => addP('cl.' + k[0], 'fn', k[1], k[1], { grp: 'cl' }));
+addP('cl.mahal', 'st', 'في محل', 'في محل', { grp: 'cl' });
+addP('cl.nomahal', 'sg', 'لا محل لها من الإعراب', 'لا محل لها من الإعراب', { grp: 'cl' });
+[['raf','رفع'],['nasb','نصب'],['jarr','جر']].forEach(c => addP('cl.' + c[0], 'sg', c[1], c[1], { grp: 'cl' }));
+CL_FN.forEach(f => addP('cl.f.' + f[0], 'fn', f[1], f[1], { grp: 'cl' }));
+
+const NOUN_CASE_SIGN = { raf: 'raf', nasb: 'nasb', jarr: 'jarr' };
+function N(t, c, fn, sign, m) { return { t, m, a: [c + '.' + fn, 'hd.' + c, 'sg.' + c + '.' + sign] }; }
+function MB(t, kind, c, fn) { const a = ['mb.' + kind, 'st.mahal', 'sg.mahal.' + c]; if (fn) a.push(c + '.' + fn); return { t, a }; }
+function H(t, kind) { return { t, a: ['hf.' + kind, 'hf.mabni', 'hf.nomahal'] }; }
+function VM(t, sign, cc) { return { t, c: cc, a: ['vb.madi', 'st.madi', 'sv.madi.' + sign] }; }
+function VP(t, mode, sign, cc) {
+  if (mode === 'mabni') return { t, c: cc, a: ['vb.mudari', 'st.mudari_mabni', 'sv.mudari_mabni.' + sign] };
+  return { t, c: cc, a: ['vb.mudari', 'st.' + mode + '_bi', 'sv.' + mode + '.' + sign] };
+}
+function VA(t, sign, cc) { return { t, c: cc, a: ['vb.amr', 'st.amr', 'sv.amr.' + sign] }; }
+function W() { return Array.prototype.slice.call(arguments); }
+function CL(t, kind, mode, fn) { const a = ['cl.' + kind]; if (mode === 'no') a.push('cl.nomahal'); else a.push('cl.mahal', 'cl.' + mode); a.push('cl.f.' + fn); return W({ t: '« ' + t + ' »', cl: true, a }); }
+
+const SENTENCES = [
+  { lv: 1, words: [ W(N('الطَّالِبُ','raf','mubtada','damma','mufrad')), W(N('مُجْتَهِدٌ','raf','khabar','damma','mufrad')) ] },
+  { lv: 1, words: [ W(VM('قَرَأَ','fath','sahih')), W(N('الطَّالِبُ','raf','fail','damma','mufrad')), W(N('الكِتَابَ','nasb','maful_bih','fatha','mufrad')) ] },
+  { lv: 1, words: [ W(VM('ذَهَبَ','fath','sahih')), W(N('الوَلَدُ','raf','fail','damma','mufrad')), W(H('إِلَى','jarr')), W(N('المَدْرَسَةِ','jarr','ism_majrur','kasra','mufrad')) ] },
+  { lv: 1, words: [ W(VP('يَلْعَبُ','raf','damma','sahih')), W(N('الأَوْلَادُ','raf','fail','damma','taksir')), W(H('فِي','jarr')), W(N('الحَدِيقَةِ','jarr','ism_majrur','kasra','mufrad')) ] },
+  { lv: 1, words: [ W(N('كِتَابُ','raf','mubtada','damma','mufrad')), W(N('التِّلْمِيذِ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('جَدِيدٌ','raf','khabar','damma','mufrad')) ] },
+  { lv: 1, words: [ W(VP('يَرْفُرِفُ','raf','damma','sahih')), W(N('عَلَمُ','raf','fail','damma','mufrad')), W(N('البِلَادِ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('فَوْقَ','nasb','zarf_makan','fatha','mufrad')), W(N('المَدْرَسَةِ','jarr','mudaf_ilayh','kasra','mufrad')) ] },
+  { lv: 1, words: [ W(N('الطَّالِبَانِ','raf','mubtada','alif','mothanna')), W(N('مُجْتَهِدَانِ','raf','khabar','alif','mothanna')), W(H('فِي','jarr')), W(N('الدِّرَاسَةِ','jarr','ism_majrur','kasra','mufrad')) ] },
+  { lv: 1, words: [ W(VM('كَافَأَ','fath','sahih')), W(N('المُعَلِّمُونَ','raf','fail','waw','jms')), W(N('الفَائِزَاتِ','nasb','maful_bih','kasra','jfs')), W(H('فِي','jarr')), W(N('المُسَابَقَةِ','jarr','ism_majrur','kasra','mufrad')) ] },
+  { lv: 1, words: [ W(VM('فَتَحَتِ','fath','taneeth')), W(N('الأُمُّ','raf','fail','damma','mufrad')), W(N('النَّوَافِذَ','nasb','maful_bih','fatha','taksir')), W(N('تَجْدِيدًا','nasb','maful_ajlih','fatha','mufrad')), W(H('لِ','jarr'), N('لْهَوَاءِ','jarr','ism_majrur','kasra','mufrad')) ] },
+
+
+  { lv: 2, words: [ W(VM('كَانَ','fath','sahih')), W(N('الجَوُّ','raf','ism_nasikh','damma','mufrad')), W(N('جَمِيلًا','nasb','khabar_fil','fatha','mufrad')) ] },
+  { lv: 2, words: [ W(H('إِنَّ','nasikh')), W(N('العِلْمَ','nasb','ism_harf','fatha','mufrad')), W(N('نُورٌ','raf','khabar_harf','damma','mufrad')) ] },
+  { lv: 2, words: [ W(VM('كَتَبَ','fath','sahih')), W(N('الطَّالِبَانِ','raf','fail','alif','mothanna')), W(N('الدَّرْسَ','nasb','maful_bih','fatha','mufrad')) ] },
+  { lv: 2, words: [ W(VM('حَضَرَ','fath','sahih')), W(N('المُعَلِّمُونَ','raf','fail','waw','jms')), W(N('مُبَكِّرِينَ','nasb','hal','ya','jms')) ] },
+  { lv: 2, words: [ W(VM('كَتَبْ','sukun','taa'), MB('تُ','mattasil','raf','fail')), W(N('الدَّرْسَ','nasb','maful_bih','fatha','mufrad')) ] },
+  { lv: 2, words: [ W(H('لَنْ','nasb')), W(VP('يَتَأَخَّرَ','nasb','fatha','sahih')), W(N('الطَّالِبُ','raf','fail','damma','mufrad')) ] },
+  { lv: 2, words: [ W(VM('جَلَسَ','fath','sahih')), W(N('الطِّفْلُ','raf','fail','damma','mufrad')), W(N('أَمَامَ','nasb','zarf_makan','fatha','mufrad')), W(N('البَيْتِ','jarr','mudaf_ilayh','kasra','mufrad')) ] },
+
+  { lv: 3, words: [ W(N('الطَّالِبُ','raf','mubtada','damma','mufrad')), W(N('أَخُو','raf','mubtada2','waw','khamsa'), MB('هُ','mattasil','jarr','mudaf_ilayh')), W(N('مُجْتَهِدٌ','raf','khabar_m2','damma','mufrad')) ] },
+  { lv: 3, words: [ W(VM('مَنَحَ','fath','sahih')), W(N('المُدِيرُ','raf','fail','damma','mufrad')), W(N('الطَّالِبَ','nasb','maful_bih','fatha','mufrad')), W(N('جَائِزَةً','nasb','maful_bih2','fatha','mufrad')) ] },
+  { lv: 3, words: [ W(VM('جَاءَ','fath','sahih')), W(N('الطُّلَّابُ','raf','fail','damma','taksir')), W(N('كُلُّ','raf','tawkid_manawi','damma','mufrad'), MB('هُمْ','mattasil','jarr','mudaf_ilayh')) ] },
+  { lv: 3, words: [ W(H('لَمْ','jazm')), W(VP('يَكْتُبُوا','jazm','hadhf_noon','khamsa')), W(N('الدَّرْسَ','nasb','maful_bih','fatha','mufrad')) ] },
+  { lv: 3, words: [ W(MB('مَنْ','shart','raf','mubtada')), W(VP('يَجْتَهِدْ','jazm','sukun','sahih')), W(VP('يَنْجَحْ','jazm','sukun','sahih')) ] },
+  { lv: 3, words: [ W(MB('هَذَا','ishara','raf','mubtada')), W(N('كِتَابٌ','raf','khabar','damma','mufrad')), W(N('مُفِيدٌ','raf','nat','damma','mufrad')) ] },
+  { lv: 3, words: [ W(VA('اكْتُبْ','sukun','sahih')), W(N('الدَّرْسَ','nasb','maful_bih','fatha','mufrad')) ] },
+  { lv: 3, words: [ W(H('هَلْ','istifham')), W(VM('حَضَرَ','fath','sahih')), W(N('المُعَلِّمُونَ','raf','fail','waw','jms')) ] },
+  { lv: 3, words: [ W(N('المُعَلِّمُونَ','raf','mubtada','waw','jms')), W(N('المُخْلِصُونَ','raf','nat','waw','jms')), W(H('فِي','jarr')), W(N('عَمَلِ','jarr','ism_majrur','kasra','mufrad'), MB('هِمْ','mattasil','jarr','mudaf_ilayh')), W(N('مَحْبُوبُونَ','raf','khabar','waw','jms')), W(H('مِنَ','jarr')), W(N('الطُّلَّابِ','jarr','ism_majrur','kasra','taksir')) ] },
+  { lv: 3, words: [ W(VM('انْشَغَلْ','sukun','taa'), MB('تُ','mattasil','raf','fail')), W(H('بِ','jarr'), N('مُسَاعَدَةِ','jarr','ism_majrur','kasra','mufrad')), W(N('أَصْدِقَائِ','jarr','mudaf_ilayh','kasra','taksir'), MB('ي','mattasil','jarr','mudaf_ilayh')), W(H('فِي','jarr')), W(N('حَلِّ','jarr','ism_majrur','kasra','mufrad')), W(N('المُشْكِلَاتِ','jarr','mudaf_ilayh','kasra','jfs')) ] },
+  { lv: 3, words: [ W(VM('قَرَأْ','sukun','taa'), MB('تُ','mattasil','raf','fail')), W(N('كِتَابًا','nasb','maful_bih','fatha','mufrad')), W(N('نَافِعًا','nasb','nat','fatha','mufrad')), W(H('عَنْ','jarr')), W(N('عَظَمَةِ','jarr','ism_majrur','kasra','mufrad')), W(N('جَيْشِ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('مِصْرَ','jarr','mudaf_ilayh','fatha','mamnu')) ] },
+  { lv: 3, words: [ W(VM('كُوفِئَ','fath','sahih')), W(N('المُتَفَوِّقُونَ','raf','naib','waw','jms')), W(H('عَلَى','jarr')), W(N('أَعْمَالِ','jarr','ism_majrur','kasra','taksir'), MB('هِمُ','mattasil','jarr','mudaf_ilayh')), W(N('المُشَرِّفَةِ','jarr','nat','kasra','mufrad')) ] },
+  { lv: 3, words: [ W(VP('أَنْطَلِقُ','raf','damma','sahih'), MB(' (أَنَا)','mustatir','raf','fail')), W(N('نَحْوَ','nasb','zarf_makan','fatha','mufrad')), W(N('الهَدَفِ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('انْطِلَاقًا','nasb','maful_ajlih','fatha','mufrad')), W(H('مِنَ','jarr')), W(N('الإِحْسَاسِ','jarr','ism_majrur','kasra','mufrad')), W(H('بِ','jarr'), N('المَسْئُولِيَةِ','jarr','ism_majrur','kasra','mufrad')) ] },
+  { lv: 3, words: [ W(H('إِنَّ','nasikh')), W(N('مُعَلِّمِي','nasb','ism_harf','ya','jms')), W(N('مِصْرَ','jarr','mudaf_ilayh','fatha','mamnu')), W(N('وَاجِبُ','raf','mubtada','damma','mufrad'), MB('هُمْ','mattasil','jarr','mudaf_ilayh')), W(N('مُقَدَّسٌ','raf','khabar','damma','mufrad')), W(N('تُجَاهَ','nasb','zarf_makan','fatha','mufrad')), W(N('وَطَنِ','jarr','mudaf_ilayh','kasra','mufrad'), MB('هِمْ','mattasil','jarr','mudaf_ilayh')) ] },
+  { lv: 3, words: [ W(H('إِنَّ','nasikh')), W(MB('الَّذِينَ','mawsul','nasb','ism_harf')), W(VP('يَضِلُّ','raf','thubut','khamsa'), MB('ونَ','mattasil','raf','fail')), W(H('عَنْ','jarr')), W(N('سَبِيلِ','jarr','ism_majrur','kasra','mufrad')), W(N('اللهِ','jarr','mudaf_ilayh','kasra','mufrad')), W(H('لِ','jarr'), MB('هُمْ','mattasil','jarr')), W(N('عَذَابٌ','raf','mubtada','damma','mufrad')), W(N('شَدِيدٌ','raf','nat','damma','mufrad')), CL('لَهُمْ','shibh','raf','khabar_muq'), CL('لَهُمْ عَذَابٌ شَدِيدٌ','ismiya','raf','khabar_harf') ] },
+  { lv: 3, words: [ W(VM('انْطَلَقَ','fath','sahih')), W(N('قِطَارُ','raf','fail','damma','mufrad')), W(N('التَّنْمِيَةِ','jarr','mudaf_ilayh','kasra','mufrad')), W(H('فِي','jarr')), W(N('مِصْرَ','jarr','ism_majrur','fatha','mamnu')), W(H('لِ','jarr'), N('تَحْقِيقِ','jarr','ism_majrur','kasra','mufrad')), W(N('آمَالِ','jarr','mudaf_ilayh','kasra','taksir')), W(N('شَعْبِ','jarr','mudaf_ilayh','kasra','mufrad'), MB('نَا','mattasil','jarr','mudaf_ilayh')), W(N('المِصْرِيِّ','jarr','nat','kasra','mufrad')), W(N('العَظِيمِ','jarr','nat2','kasra','mufrad')) ] },
+  { lv: 3, words: [ W(H('لَيْتَ','nasikh')), W(N('المِصْرِيِّينَ','nasb','ism_harf','ya','jms')), W(VP('يُدْرِكُ','raf','thubut','khamsa'), MB('ونَ','mattasil','raf','fail')), W(N('قِيمَةَ','nasb','maful_bih','fatha','mufrad')), W(H('وَ','atf'), N('عَظَمَةَ','nasb','matuf','fatha','mufrad')), W(N('تُرَاثِ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('آبَاءِ','jarr','mudaf_ilayh','kasra','taksir'), MB('هِمُ','mattasil','jarr','mudaf_ilayh')), W(N('المَجِيدِ','jarr','nat','kasra','mufrad')), CL('يُدْرِكُونَ قِيمَةَ وَعَظَمَةَ تُرَاثِ آبَائِهِمُ المَجِيدِ','filiya','raf','khabar_harf') ] },
+  { lv: 3, words: [ W(VM('أَضْحَتْ','fath','taneeth')), W(N('شُعُوبُ','raf','ism_nasikh','damma','taksir')), W(N('أُمَّتِ','jarr','mudaf_ilayh','kasra','mufrad'), MB('نَا','mattasil','jarr','mudaf_ilayh')), W(N('العَرَبِيَّةِ','jarr','nat','kasra','mufrad')), W(N('حَرِيصَةً','nasb','khabar_fil','fatha','mufrad')), W(H('عَلَى','jarr')), W(N('تَحْقِيقِ','jarr','ism_majrur','kasra','mufrad')), W(N('الأَمْنِ','jarr','mudaf_ilayh','kasra','mufrad')), W(H('وَ','atf'), N('الِاسْتِقْرَارِ','jarr','matuf','kasra','mufrad')) ] },
+  { lv: 3, words: [ W(H('إِنَّ','nasikh')), W(N('حَمَا','nasb','ism_harf','alif','khamsa')), W(N('أَخِي','jarr','mudaf_ilayh','ya','khamsa'), MB('كَ','mattasil','jarr','mudaf_ilayh')), W(N('رَجُلٌ','raf','khabar_harf','damma','mufrad')), W(N('ذُو','raf','nat','waw','khamsa')), W(N('خُلُقٍ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('عَظِيمٍ','jarr','nat','kasra','mufrad')), W(H('لَا','nafy')), W(VP('يَنْطِقُ','raf','damma','sahih')), W(N('فُو','raf','fail','waw','khamsa'), MB('هُ','mattasil','jarr','mudaf_ilayh')), W(H('بِ','jarr'), N('الأَكَاذِيبِ','jarr','ism_majrur','kasra','taksir')), CL('لَا يَنْطِقُ فُوهُ بِالأَكَاذِيبِ','filiya','raf','nat') ] },
+  { lv: 3, words: [ W(VM('مَرَرْ','sukun','taa'), MB('تُ','mattasil','raf','fail')), W(H('بِ','jarr'), N('صَحْرَاءِ','jarr','ism_majrur','kasra','mufrad')), W(N('مِصْرَ','jarr','mudaf_ilayh','fatha','mamnu')), W(N('الشَّاسِعَةِ','jarr','nat','kasra','mufrad')), W(N('الوَاسِعَةِ','jarr','nat2','kasra','mufrad')), W(N('هَائِمًا','nasb','hal','fatha','mufrad')), W(H('فِي','jarr')), W(N('قِفَارِ','jarr','ism_majrur','kasra','taksir'), MB('هَا','mattasil','jarr','mudaf_ilayh')) ] },
+  { lv: 3, words: [ W(H('إِنَّ','nasikh')), W(H('فِي','jarr')), W(N('مِصْرَ','jarr','ism_majrur','fatha','mamnu')), W(N('آثَارًا','nasb','ism_harf','fatha','taksir')), W(N('عَرِيقَةً','nasb','nat','fatha','mufrad')), W(VP('تَشْهَدُ','raf','damma','sahih'), MB(' (هِيَ)','mustatir','raf','fail')), W(H('بِ','jarr'), N('عَظَمَةِ','jarr','ism_majrur','kasra','mufrad')), W(N('المِصْرِيِّينَ','jarr','mudaf_ilayh','ya','jms')), W(N('القُدَمَاءِ','jarr','nat','kasra','taksir')), CL('فِي مِصْرَ','shibh','raf','khabar_inna_muq'), CL('تَشْهَدُ بِعَظَمَةِ المِصْرِيِّينَ القُدَمَاءِ','filiya','nasb','nat') ] },
+  { lv: 3, words: [ W(VM('أُعْجِبْ','sukun','taa'), MB('تُ','mattasil','raf','naib')), W(H('بِ','jarr'), N('مَنَاقِبَ','jarr','ism_majrur','fatha','mamnu')), W(N('عَظِيمَةٍ','jarr','nat','kasra','mufrad')), W(N('مَنَاقِبِ','jarr','badal','kasra','taksir')), W(N('الشَّهِيدِ','jarr','mudaf_ilayh','kasra','mufrad')), W(H('وَ','atf'), N('مَنَاقِبِ','jarr','matuf','kasra','taksir')), W(N('الكَرِيمِ','jarr','mudaf_ilayh','kasra','mufrad')), W(H('وَ','atf'), N('الوَفِيِّ','jarr','matuf','kasra','mufrad')) ] },
+  { lv: 3, words: [ W(MB('هَؤُلَاءِ','ishara','raf','mubtada')), W(N('رِجَالٌ','raf','khabar','damma','taksir')), W(VP('يَعْشَقُ','raf','thubut','khamsa'), MB('ونَ','mattasil','raf','fail')), W(N('الحُرِّيَّةَ','nasb','maful_bih','fatha','mufrad')), W(H('وَ','atf'), MB('هَؤُلَاءِ','ishara','raf','mubtada')), W(N('الرِّجَالُ','raf','badal','damma','taksir')), W(VP('يُدَافِعُ','raf','thubut','khamsa'), MB('ونَ','mattasil','raf','fail')), W(H('عَنِ','jarr')), W(N('الوَطَنِ','jarr','ism_majrur','kasra','mufrad')), CL('يَعْشَقُونَ الحُرِّيَّةَ','filiya','raf','nat'), CL('يُدَافِعُونَ عَنِ الوَطَنِ','filiya','raf','khabar') ] },
+  { lv: 3, words: [ W(VP('يُوَجِّهُ','raf','damma','sahih')), W(N('المُسْلِمُونَ','raf','fail','waw','jms')), W(N('وُجُوهَ','nasb','maful_bih','fatha','taksir'), MB('هُمْ','mattasil','jarr','mudaf_ilayh')), W(N('تِلْقَاءَ','nasb','zarf_makan','fatha','mufrad')), W(N('مَكَّةَ','jarr','mudaf_ilayh','fatha','mamnu')), W(N('قَاصِدِينَ','nasb','hal','ya','jms')), W(N('الصَّلَاةَ','nasb','maful_bih','fatha','mufrad')) ] },
+  { lv: 3, words: [ W(H('إِنَّ','nasikh')), W(MB('الَّذِي','mawsul','nasb','ism_harf')), W(VM('سَمَكَ','fath','sahih'), MB(' (هُوَ)','mustatir','raf','fail')), W(N('السَّمَاءَ','nasb','maful_bih','fatha','mufrad')), W(VM('بَنَى','fath_muq','illa_alif'), MB(' (هُوَ)','mustatir','raf','fail')), W(H('لِ','jarr'), MB('نَا','mattasil','jarr')), W(N('بَيْتًا','nasb','maful_bih','fatha','mufrad')), W(N('دَعَائِمُ','raf','mubtada','damma','taksir'), MB('هُ','mattasil','jarr','mudaf_ilayh')), W(N('أَعَزُّ','raf','khabar','damma','mufrad')), W(H('وَ','atf'), N('أَقْوَمُ','raf','matuf','damma','mufrad')), CL('دَعَائِمُهُ أَعَزُّ وَأَقْوَمُ','ismiya','nasb','nat'), CL('بَنَى لَنَا بَيْتًا دَعَائِمُهُ أَعَزُّ وَأَقْوَمُ','filiya','raf','khabar_harf') ] },
+  { lv: 3, words: [ W(VM('تَعَلَّمْ','sukun','taa'), MB('تُ','mattasil','raf','fail')), W(H('عَلَى','jarr')), W(N('يَدِ','jarr','ism_majrur','kasra','mufrad')), W(N('عُلَمَاءَ','jarr','mudaf_ilayh','fatha','mamnu')), W(N('أَجِلَّاءَ','jarr','nat','fatha','mamnu')), W(H('فِي','jarr')), W(N('مَوَاطِنِ','jarr','ism_majrur','kasra','taksir')), W(N('العِلْمِ','jarr','mudaf_ilayh','kasra','mufrad')), W(N('المُخْتَلِفَةِ','jarr','nat','kasra','mufrad')) ] }
+];
+if (false) module.exports = { PIECES, SENTENCES, NOUN_SIGNS, VERB_SIGNS, M_LABEL, C_LABEL, FN_RAF, FN_NASB, FN_JARR };
+
+(function(){
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const store = { get(k,d){ try{ const v = localStorage.getItem(k); return v===null?d:v; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} } };
+const S = { lv:1, si:0, ui:0, units:[], placed:[], mist:0, flash:0, step:0, stepFlash:0, stepMist:0, scores:[0,0], team:0, teams:true, snd:true, chal:false, done:false, lock:false, sentAcc:0, sentPaid:0, total:{m:0,f:0} };
+const SAYFIX = { 'sv.jazm.hadhf_illa':'حذف حرف العلة', 'sv.amr.hadhf_illa':'حذف حرف العلة' };
+const sayOf = id => SAYFIX[id] || PIECES[id].say;
+function parse(u){ let out=''; u.a.forEach((id,i)=>{ const p=PIECES[id]; out += (i? (/^st\.(raf|nasb|jazm)_bi$/.test(u.a[i-1])?'':' '):'') + sayOf(id); }); return out; }
+const tabOf = id => { const g = PIECES[id].grp; return g==='vb'?'v':(g==='hf'||g==='cl')?'h':'n'; };
+const levelList = () => SENTENCES.filter(s=>s.lv===S.lv);
+let CUSTOM = [];
+
+/* ---------- المؤقّت: دقيقة لكل جملة ---------- */
+const LIMIT = 80; let tLeft = LIMIT, tInt = null;
+function tShow(){ const el = $('#tm'); el.textContent = String(Math.floor(tLeft/60)).padStart(2,'0') + ':' + String(tLeft%60).padStart(2,'0'); el.classList.toggle('low', tLeft<=10 && tLeft>0); }
+function tLabel(){ $('#bTm').textContent = tInt ? 'إيقاف' : (tLeft<LIMIT && tLeft>0 ? 'استأنف' : 'ابدأ'); }
+function tStop(){ clearInterval(tInt); tInt = null; tLabel(); }
+function tReset(){ tStop(); S.lock = false; tLeft = LIMIT; tShow(); tLabel(); }
+function tRun(){ if (tInt || S.done || tLeft<=0 || !S.units.length) return;
+  tInt = setInterval(()=>{
+    if ($('#modal').classList.contains('on') || $('#ed').classList.contains('on')) return;
+    tLeft--; tShow();
+    if (tLeft <= 0){ tStop(); S.lock = true; beep('bad'); setHint('انتهى الوقت! اضغطوا «إعادة» أو انتقلوا للجملة التالية.'); }
+  }, 1000); tLabel(); }
+
+const Q = {
+ 'raf.mubtada':'عمّ نتحدث؟ اسم نبدأ به الجملة الاسمية.','raf.khabar':'ما الذي يكمل المعنى مع المبتدأ ويخبرنا عنه؟','raf.fail':'من الذي قام بالفعل؟','raf.naib':'الفعل مبني للمجهول: من الذي حلّ محل الفاعل؟',
+ 'raf.mubtada2':'اسم ثانٍ بعد المبتدأ الأول، وله خبر خاص به.','raf.khabar_m2':'ما الذي يخبرنا عن المبتدأ الثاني؟','raf.ism_nasikh':'اسم جاء بعد كان أو إحدى أخواتها.','raf.khabar_harf':'خبر جاء بعد اسم الحرف الناسخ (إنّ وأخواتها).',
+ 'raf.nat':'كلمة تصف الاسم الذي قبلها وتتبعه في الرفع.','raf.tawkid_manawi':'لفظ مثل (كل، نفس، عين) يؤكد الكلمة قبله.','raf.matuf':'اسم بعد حرف عطف.','raf.badal':'اسم يأتي بدلًا من الاسم قبله.',
+ 'nasb.maful_bih':'ما الذي وقع عليه فعل الفاعل؟','nasb.maful_bih2':'الفعل يطلب مفعولين: هذا هو الثاني.','nasb.maful_mutlaq':'مصدر يؤكد الفعل أو يبيّن نوعه أو عدده.','nasb.maful_ajlih':'لماذا حدث الفعل؟ مصدر يبيّن السبب.',
+ 'nasb.zarf_zaman':'متى حدث الفعل؟','nasb.zarf_makan':'أين حدث الفعل؟','nasb.hal':'كيف كان صاحب الحال وقت الفعل؟','nasb.tamyiz':'اسم يزيل الإبهام عمّا قبله.','nasb.ism_harf':'اسم جاء بعد إنّ أو إحدى أخواتها.','nasb.khabar_fil':'خبر جاء بعد كان أو إحدى أخواتها.',
+ 'nasb.nat':'يصف اسمًا منصوبًا قبله.','nasb.tawkid_manawi':'لفظ يؤكد الاسم المنصوب قبله.','nasb.matuf':'اسم بعد حرف عطف.','nasb.badal':'اسم بدل من منصوب قبله.',
+ 'jarr.ism_majrur':'اسم جاء بعد حرف جر.','jarr.mudaf_ilayh':'اسم جاء بعد اسم آخر فأتمّ معناه (إضافة).','jarr.nat':'يصف اسمًا مجرورًا قبله.','jarr.tawkid_manawi':'لفظ يؤكد الاسم المجرور قبله.','jarr.matuf':'اسم بعد حرف عطف.','jarr.badal':'اسم بدل من مجرور قبله.','jarr.tamyiz':'يزيل الإبهام ويكون مجرورًا.',
+ 'mb.ishara':'اسم يشير إلى شيء (هذا، هذه، ذلك...).','mb.mawsul':'اسم يحتاج إلى جملة تُتمّ معناه (الذي، التي...).','mb.shart':'اسم يربط بين فعل الشرط وجوابه.','mb.mattasil':'ضمير متصل بآخر كلمة قبله.','mb.munfasil':'ضمير يقف وحده (هو، هي، أنا...).','mb.mustatir':'ضمير غير ظاهر في اللفظ.','mb.istifham':'اسم نسأل به (مَن، ماذا، متى...).','mb.zarf':'ظرف مبني لا تتغير حركته.',
+ 'vb.madi':'فعل يدل على حدث وقع وانتهى.','vb.mudari':'فعل يدل على حدث يقع الآن أو بعد قليل، ويبدأ بأحد أحرف (أنيت).','vb.amr':'فعل يطلب حدوث شيء بعد زمن التكلم.',
+ 'raf.nat2':'نعت ثانٍ يأتي بعد النعت الأول ويتبع نفس الاسم.','nasb.nat2':'نعت ثانٍ يأتي بعد النعت الأول ويتبع نفس الاسم.','jarr.nat2':'نعت ثانٍ يأتي بعد النعت الأول ويتبع نفس الاسم.','hf.nafy':'حرف ينفي الفعل بعده.','hf.nida':'حرف ننادي به (يا، أيا، أي).','hf.istithna':'حرف يُخرج ما بعده من حكم ما قبله (إلا).','nasb.munada':'اسم نناديه ونطلب إقباله، ويأتي بعد حرف نداء.','nasb.mustathna':'اسم يأتي بعد أداة استثناء ويخرج من حكم ما قبله.',
+ 'hf.nasikh':'حرف يدخل على الجملة الاسمية فينسخ حكمها.','hf.atf':'حرف يربط كلمة بكلمة.','hf.jarr':'حرف يجرّ الاسم بعده.','hf.nasb':'حرف ينصب الفعل المضارع بعده.','hf.jazm':'حرف يجزم الفعل المضارع بعده.','hf.istifham':'حرف نسأل به.' };
+function stepText(u, k){
+  const id = u.a[k], p = PIECES[id];
+  if (k===0) return Q[id] || (/^cl\./.test(id) ? 'هذه جملة كاملة: هل هي اسمية أم فعلية أم شبه جملة (جار ومجرور أو ظرف)؟' : 'فكّروا: ما نوع الكلمة، وما وظيفتها في الجملة؟');
+  if (id==='cl.mahal') return 'هل تحل الجملة محل مفرد؟ إن حلّت محله فلها محل من الإعراب.';
+  if (id==='cl.nomahal') return 'الجملة لا تحل محل مفرد، فلا محل لها من الإعراب (مثل صلة الموصول).';
+  if (/^cl\.(raf|nasb|jarr)$/.test(id)) return 'لو وضعنا مكان الجملة مفردًا، فهل يكون مرفوعًا أم منصوبًا أم مجرورًا؟';
+  if (/^cl\.f\./.test(id)) return 'ما وظيفة هذه الجملة في الكلام قبلها؟';
+  if (p.cls==='st' && /^hd\./.test(id)) return 'اسم معرب: انظروا إلى حالة الكلمة (رفع أو نصب أو جر) وطابقوها مع عمود الوظيفة.';
+  if (id==='st.mahal') return 'اسم مبني لا تتغير حركته، فنقول: مبني في محل ...';
+  if (/^st\.(raf|nasb|jazm)_bi$/.test(id)) return 'الفعل المضارع معرب: هل هو مرفوع أم منصوب أم مجزوم؟ انظروا إلى ما قبله.';
+  if (/^st\.(madi|amr|mudari_mabni)$/.test(id)) return 'هذا الفعل مبني: نقول مبني على ...';
+  if (id==='hf.mabni') return 'الحرف دائمًا مبني.';
+  if (id==='hf.nomahal') return 'الحرف لا محل له من الإعراب.';
+  if (/^sg\.mahal\./.test(id)) return 'ما موقع الكلمة من الإعراب لو كانت معربة: رفع أم نصب أم جر؟';
+  if (/^sv\./.test(id)) return 'حال الفعل: ' + C_LABEL[u.c] + '. طابقوه مع القطعة الصفراء.';
+  if (/^sg\./.test(id)) return 'نوع الكلمة: ' + M_LABEL[u.m] + '. طابقوه مع القطعة الصفراء.';
+  if (/^(raf|nasb|jarr)\./.test(id)) return 'ما وظيفة هذه الكلمة بعد أن عرفنا حالتها؟';
+  return 'تأمّلوا القطع المضيئة.';
+}
+
+const pbtn = (id, extra='') => `<button class="pc ${PIECES[id].cls}${PIECES[id].grp==='mb'?' mb':''} btn-p ${extra}" data-id="${id}">${PIECES[id].label}</button>`;
+function signCells(arr, prefix){ return arr.map(s=>`<div class="signcell"><div class="clue">${s[3]}</div>${pbtn(prefix+s[0])}</div>`).join(''); }
+function buildTray(){
+  const col = (list,g)=>`<div style="display:flex;flex-direction:column;gap:.4rem">${list.map(f=>pbtn(g+'.'+f[0],'sm')).join('')}</div>`;
+  const nameGrp = (title,g,list,two) => `<div class="grp" style="flex:${two?2:1} 1 ${two?'26':'13'}rem"><div class="gt">${title}</div>${two?`<div class="cols2" data-split="${g==='nasb'?9:8}">${col(list.slice(0,g==='nasb'?9:8),g)}${col(list.slice(g==='nasb'?9:8),g)}</div>`:col(list,g)}${pbtn('hd.'+g)}<div class="signs">${signCells(NOUN_SIGNS[g],'sg.'+g+'.')}</div></div>`;
+  const mb = ['ishara','mawsul','shart','mattasil','munfasil','mustatir','istifham','zarf'].map(k=>pbtn('mb.'+k,'sm')).join('');
+  $('#sn').innerHTML = nameGrp('المرفوعات','raf',FN_RAF,true) + nameGrp('المنصوبات','nasb',FN_NASB,true) + nameGrp('المجرورات','jarr',FN_JARR,false)
+    + `<div class="grp"><div class="gt mbt">الأسماء المبنية</div><div style="display:flex;flex-direction:column;gap:.4rem">${mb}</div>${pbtn('st.mahal')}<div class="signs">${['raf','nasb','jarr'].map(c=>pbtn('sg.mahal.'+c)).join('')}</div></div>`;
+  const vs = (g)=>VERB_SIGNS[g].map(s=>`<div class="signcell"><div class="clue">${s[2]}</div>${pbtn('sv.'+g+'.'+s[0])}</div>`).join('');
+  const pres = ['raf','nasb','jazm'].map(g=>`<div class="signcell" style="gap:.4rem">${pbtn('st.'+g+'_bi')}${vs(g)}</div>`).join('');
+  $('#sv').innerHTML = `<div class="vblock" style="flex:2 1 32rem"><div class="gt pu">الفعل المضارع</div>${pbtn('vb.mudari')}<div class="vgrid" style="grid-template-columns:repeat(3,1fr)">${pres}</div><div class="mmb"><div class="gt">المضارع المبني</div>${pbtn('st.mudari_mabni')}<div class="vgrid" style="grid-template-columns:1fr 1fr">${vs('mudari_mabni')}</div></div></div>
+   <div class="vblock"><div class="gt pu">الفعل الماضي</div>${pbtn('vb.madi')}${pbtn('st.madi')}<div class="vgrid">${vs('madi')}</div></div>
+   <div class="vblock"><div class="gt pu">فعل الأمر</div>${pbtn('vb.amr')}${pbtn('st.amr')}<div class="vgrid">${vs('amr')}</div></div>`;
+  $('#sh').innerHTML = `<div class="vblock" style="max-width:26rem"><div class="gt">الحرف</div>${['nasikh','atf','jarr','nasb','jazm','istifham','nafy','nida','istithna'].map(k=>pbtn('hf.'+k)).join('')}${pbtn('hf.mabni')}${pbtn('hf.nomahal','sm')}</div>
+   <div class="vblock" style="flex:2 1 30rem"><div class="gt pu">الجملة وشبه الجملة</div><div class="cols3">${CL_TYPES.map(k=>pbtn('cl.'+k[0])).join('')}</div><div class="cols2">${pbtn('cl.mahal')}${pbtn('cl.nomahal','sm')}</div><div class="cols3">${['raf','nasb','jarr'].map(c=>pbtn('cl.'+c)).join('')}</div><div class="gt">وظيفة الجملة</div><div class="cols2">${CL_FN.map(f=>pbtn('cl.f.'+f[0],'sm')).join('')}</div></div>`;
+}
+function tagCols(){ $$('#sn .grp > .cols2').forEach(c=>{ c.classList.add('ncols'); [...c.querySelectorAll('.btn-p')].forEach((b,i)=>{ b.dataset.ix = i; }); }); }
+function balanceCols(){
+  $$('.ncols').forEach(c=>{
+    const cols = [...c.children];
+    [...c.querySelectorAll('.btn-p')].sort((a,b)=>a.dataset.ix-b.dataset.ix).forEach(b=>(+b.dataset.ix < +c.dataset.split?cols[0]:cols[1]).appendChild(b));
+    const vis = col => [...col.children].filter(b=>!b.hidden);
+    while (vis(cols[0]).length - vis(cols[1]).length >= 2){ const v = vis(cols[0]); cols[1].appendChild(v[v.length-1]); }
+  });
+}
+function showTab(t){ $$('#tabs button').forEach(b=>b.setAttribute('aria-selected', b.dataset.t===t)); ['n','v','h'].forEach(k=>$('#s'+k).classList.toggle('on',k===t)); }
+
+function applyTrayFilter(){
+  const OUT1 = /^(raf|nasb|jarr)\.(tawkid_lafzi|tawkid_manawi|badal|nat2|tamyiz|matuf)$|^sg\.jarr\.fatha$|^st\.mudari_mabni$|^sv\.mudari_mabni\.|^mb\.(shart|istifham|zarf)$|^nasb\.(munada|mustathna)$|^hf\.(nida|istithna)$/;
+  $$('.btn-p').forEach(b=>{ const id=b.dataset.id; b.hidden = (S.lv===1 && OUT1.test(id)) || (/^cl\./.test(id) && S.lv!==3); });
+  balanceCols();
+  $$('.signcell').forEach(c=>{ const b=c.querySelector('.btn-p'); c.hidden = !!(b && b.hidden); });
+  $$('.grp,.vblock,.mmb').forEach(g=>{ g.hidden = ![...g.querySelectorAll('.btn-p')].some(b=>!b.hidden); });
+  $$('#tabs button').forEach(t=>{ t.hidden = ![...$('#s'+t.dataset.t).querySelectorAll('.btn-p')].some(b=>!b.hidden); });
+}
+function load(si){
+  applyTrayFilter();
+  if (!levelList().length){ tStop(); S.units=[]; S.placed=[]; S.done=false; $('#sNo').textContent='لا توجد جمل'; $('#words').innerHTML='<div class="empty">لا توجد جمل بعد. اضغط «+ جملتي» لإضافة جملة وإعرابها.</div>'; return; }
+  S.si = Math.max(0, Math.min(levelList().length-1, si)); S.ui = 0; S.mist = 0; S.flash = 0; S.done = false; S.units = [];
+  levelList()[S.si].words.forEach((w,wi)=>w.forEach((u,k)=>S.units.push(Object.assign({wi,k,full:w.map(x=>x.t).join('')},u))));
+  S.placed = S.units.map(()=>0); S.step = 0; S.stepFlash = 0; S.stepMist = 0; S.total = {m:0,f:0}; S.sentAcc = 0; S.sentPaid = 0;
+  render(); setHint('الومضة تلمّح لكم بالقطعة المناسبة، وكل ومضة تخصم نقطة.'); tReset();
+}
+function render(){
+  const sent = levelList()[S.si]; $('#sNo').textContent = `الجملة ${S.si+1} من ${levelList().length}`;
+  $('#words').innerHTML = sent.words.map((w,wi)=>{
+    const units = S.units.filter(u=>u.wi===wi); const idx = units.map(u=>S.units.indexOf(u));
+    const done = idx.every(i=>i<S.ui || S.done), active = idx.includes(S.ui) && !S.done;
+    const text = units.map((u,k)=>`<span class="u${idx[k]===S.ui&&!S.done?' cur':''}">${u.t}</span>`).join('');
+    const tracks = units.map((u,k)=>{ const i = idx[k]; let h = '';
+      const n = (S.chal && i===S.ui) ? S.placed[i]+1 : u.a.length;
+      for (let s=0;s<(i<S.ui||S.done?u.a.length:n);s++){
+        if (s<S.placed[i] || i<S.ui || S.done) h += `<div class="slot"><span class="pc ${PIECES[u.a[s]].cls}${PIECES[u.a[s]].grp==='mb'?' mb':''}" style="display:flex;align-items:center;justify-content:center">${PIECES[u.a[s]].label}</span></div>`;
+        else h += `<div class="slot${s===S.placed[i]&&i===S.ui?' open':''}" data-slot="${i}.${s}"></div>`;
+      }
+      return `<div class="track">${h}</div>`; }).join('');
+    return `<div class="col${active?' active':''}${done?' done':''}${units[0]&&units[0].cl?' clause':''}"><div class="word">${text}</div><div class="tracks">${tracks}</div></div>`;
+  }).join('');
+  $('#fl').textContent = S.stepFlash ? `(${S.stepFlash}/3)` : '';
+  renderTeams();
+}
+function renderTeams(){
+  const names = ['فريق الألف','فريق الباء'], cols = ['var(--teamA)','var(--teamB)'];
+  $('#teams').style.display = S.teams ? 'flex' : 'none';
+  $('#teams').innerHTML = names.map((n,i)=>`<div class="team${S.team===i?' on':''}" style="--c:${cols[i]}" data-t="${i}"><i></i><span>${n}</span><b>${S.scores[i]}</b><button class="pm" data-pm="${i}.1" aria-label="زيادة">+</button><button class="pm" data-pm="${i}.-1" aria-label="إنقاص">−</button></div>`).join('');
+}
+function setHint(t){ $('#hint').textContent = t; }
+function clearFx(){ $$('.glow,.strong,.shake').forEach(e=>e.classList.remove('glow','strong','shake')); $$('#tabs .flash').forEach(e=>e.classList.remove('flash')); }
+
+function tap(id, btn){
+  if (S.done || S.lock) return;
+  const u = S.units[S.ui], k = S.placed[S.ui], want = u.a[k];
+  clearFx(); beep(id===want?'ok':'bad');
+  if (id !== want){ S.mist++; S.stepMist++; btn.classList.add('shake'); setTimeout(()=>btn.classList.remove('shake'),450);
+    if (S.stepMist>=2 && S.stepFlash===0){ setHint('ومضة مجانية: ' + stepText(u,k)); flashTab(tabOf(want)); } else setHint('ليست هذه القطعة المناسبة، فكّروا مرة أخرى.'); renderScoreTip(); return; }
+  fly(btn, k, ()=>{ S.placed[S.ui]++; S.step = S.placed[S.ui]; S.stepFlash = 0; S.stepMist = 0;
+    if (S.placed[S.ui] >= u.a.length) finishUnit(u); else { render(); setHint('أحسنتم! ما القطعة التالية؟'); } });
+}
+function renderScoreTip(){}
+function fly(btn, k, cb){
+  const slot = document.querySelector(`[data-slot="${S.ui}.${k}"]`);
+  if (!slot || !btn.animate || matchMedia('(prefers-reduced-motion:reduce)').matches){ cb(); return; }
+  const a = btn.getBoundingClientRect(), b = slot.getBoundingClientRect(), c = btn.cloneNode(true);
+  c.className = btn.className + ' fly'; c.style.cssText = `left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px;margin:0`;
+  document.body.appendChild(c);
+  const an = c.animate([{transform:'translate(0,0)'},{transform:`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${b.width/a.width},${b.height/a.height})`}],{duration:320,easing:'ease-in-out'});
+  an.onfinish = ()=>{ c.remove(); cb(); };
+}
+function finishUnit(u){
+  /* قيمة ثابتة لكل جملة (30 عادي / 45 تحدٍّ) تتوزع بالتساوي على وحداتها، فلا يتأثر الفريق بعدد كلمات جملته */
+  const SENT = S.chal ? 45 : 30, share = SENT / S.units.length, per = S.chal ? 3 : 2, unitBase = S.chal ? 15 : 10;
+  const frac = Math.max(.1, 1 - ((u._m||0)*per + (u._f||0)) / unitBase);
+  S.sentAcc += share * frac;
+  const pts = Math.round(S.sentAcc) - S.sentPaid; S.sentPaid += pts;
+  if (S.teams) S.scores[S.team] += pts;
+  S.total.m += (u._m||0); S.total.f += (u._f||0);
+  setHint(`«${u.t}» ${parse(u)} — +${pts} نقطة`);
+  S.ui++; S.step = 0;
+  if (S.ui >= S.units.length){ S.done = true; if (S.teams) S.team = 1 - S.team; tStop(); render(); setTimeout(showResult, 700); beep('win'); confetti(); } else render();
+}
+const _tap = tap;
+tap = function(id, btn){ const u = S.units[S.ui], before = S.mist; _tap(id, btn); if (u && S.mist>before) u._m = (u._m||0)+1; };
+function useFlash(){
+  if (S.done || S.lock) return; const u = S.units[S.ui], k = S.placed[S.ui], want = u.a[k];
+  clearFx(); S.stepFlash = Math.min(3, S.stepFlash+1); const f = S.stepFlash;
+  const cost = f===1 ? (S.chal?1:0) : f===2 ? 1 : 2; if (cost){ u._f = (u._f||0)+cost; S.flash += cost; }
+  if (f>=1){ setHint('ومضة: ' + stepText(u,k)); flashTab(tabOf(want)); }
+  if (f===2){ const pool = $$('#s'+tabOf(want)+' .btn-p').filter(b=>b.dataset.id!==want && PIECES[b.dataset.id].cls===PIECES[want].cls && !b.hidden).sort(()=>Math.random()-.5).slice(0,2);
+    [...pool, $(`.btn-p[data-id="${want}"]`)].forEach(b=>b&&b.classList.add('glow')); showTab(tabOf(want)); }
+  if (f===3){ showTab(tabOf(want)); const b = $(`.btn-p[data-id="${want}"]`); b.classList.add('strong'); b.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  render(); $('#fl').textContent = `(${S.stepFlash}/3)`;
+}
+function flashTab(t){ const b = $(`#tabs button[data-t="${t}"]`); b.classList.remove('flash'); void b.offsetWidth; b.classList.add('flash'); }
+
+function showResult(){
+  const sent = levelList()[S.si], bad = S.total.m + S.total.f, stars = bad===0?3:bad<=3?2:1;
+  $('#mS').textContent = '★'.repeat(stars) + '☆'.repeat(3-stars);
+  $('#mR').innerHTML = sent.words.map(w=>w.map(u=>`<div><b>${u.t}</b> : ${parse(u)}</div>`).join('')).join('');
+  $('#mNext').style.display = S.si < levelList().length-1 ? '' : 'none';
+  $('#modal').classList.add('on'); $('#mNext').focus();
+}
+let AC; function beep(k){ if(!S.snd) return; try{ AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+  const seq = k==='ok'?[[660,.08],[880,.1]]:k==='bad'?[[180,.2]]:[[523,.1],[659,.1],[784,.1],[1047,.25]]; let t = AC.currentTime;
+  seq.forEach(([f,d])=>{ const o = AC.createOscillator(), g = AC.createGain(); o.type = k==='bad'?'sawtooth':'triangle'; o.frequency.value = f; g.gain.setValueAtTime(.12,t); g.gain.exponentialRampToValueAtTime(.001,t+d); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+d); t += d; }); }catch(e){} }
+function confetti(){ const c = $('#conf'), x = c.getContext('2d'); if (matchMedia('(prefers-reduced-motion:reduce)').matches) return; c.width = innerWidth; c.height = innerHeight;
+  const cols = ['#ffd23f','#25b4f5','#e8573d','#0f9d8a','#8d5cf6'], P = Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,s:6+Math.random()*8,c:cols[Math.random()*5|0],r:Math.random()*6}));
+  let n = 0; (function f(){ x.clearRect(0,0,c.width,c.height); P.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.r+=.1; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle=p.c; x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); x.restore(); }); if (++n<150) requestAnimationFrame(f); else x.clearRect(0,0,c.width,c.height); })(); }
+
+buildTray(); tagCols(); showTab('n');
+document.addEventListener('click', e=>{
+  const pb = e.target.closest('.btn-p'); if (pb && pb.dataset.id){ tap(pb.dataset.id, pb); return; }
+  const tb = e.target.closest('#tabs button'); if (tb){ showTab(tb.dataset.t); return; }
+  const lb = e.target.closest('#lvseg button'); if (lb){ S.lv = +lb.dataset.lv; $$('#lvseg button').forEach(b=>b.setAttribute('aria-pressed', b===lb)); load(0); return; }
+  const tm = e.target.closest('.team'); if (tm){ const pm = e.target.closest('.pm'); if (pm){ const [i,d] = pm.dataset.pm.split('.').map(Number); S.scores[i] = Math.max(0, S.scores[i]+d); } else S.team = +tm.dataset.t; renderTeams(); }
+});
+$('#bFlash').onclick = useFlash;
+$('#bTm').onclick = ()=>{ tInt ? tStop() : tRun(); };
+$('#bPrev').onclick = ()=>load(S.si-1); $('#bNext').onclick = ()=>load(S.si+1); $('#bReset').onclick = ()=>load(S.si);
+$('#mNext').onclick = ()=>{ $('#modal').classList.remove('on'); load(S.si+1); }; $('#mAgain').onclick = ()=>{ $('#modal').classList.remove('on'); load(S.si); }; $('#mClose').onclick = ()=>$('#modal').classList.remove('on');
+$('#bSnd').onclick = e=>{ S.snd = !S.snd; e.currentTarget.setAttribute('aria-pressed', S.snd); };
+$('#bChal').onclick = e=>{ S.chal = !S.chal; e.currentTarget.setAttribute('aria-pressed', S.chal); load(S.si); setHint(S.chal?'وضع التحدي: لا يظهر عدد الخانات، والأخطاء والومضات تخصم أكثر.':'عدنا إلى وضع التدريب.'); };
+let zoom = +store.get('ebr-zoom',1) || 1; const applyZoom = ()=>{ document.documentElement.style.setProperty('--zoom', zoom); store.set('ebr-zoom', zoom); };
+$('#bZm').onclick = ()=>{ zoom = Math.min(1.5, +(zoom+.1).toFixed(2)); applyZoom(); }; $('#bZl').onclick = ()=>{ zoom = Math.max(.7, +(zoom-.1).toFixed(2)); applyZoom(); }; applyZoom();
+$('#bTheme').onclick = ()=>{ const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme==='dark' : matchMedia('(prefers-color-scheme:dark)').matches; r.dataset.theme = dark?'light':'dark'; store.set('ebr-theme', r.dataset.theme); };
+const th = store.get('ebr-theme',''); if (th) document.documentElement.dataset.theme = th;
+$('#bFs').onclick = ()=>{ try{ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(()=>{}); }catch(e){} };
+document.addEventListener('keydown', e=>{ if (e.key==='Escape'){ $('#modal').classList.remove('on'); $('#ed').classList.remove('on'); } });
+
+const GROUPS = { raf:['المرفوعات',FN_RAF], nasb:['المنصوبات',FN_NASB], jarr:['المجرورات',FN_JARR] };
+const CASE_AR = { raf:'الرفع', nasb:'النصب', jarr:'الجر' };
+const KINDS = [['ishara','اسم إشارة'],['mawsul','اسم موصول'],['shart','اسم شرط'],['mattasil','ضمير متصل'],['munfasil','ضمير منفصل'],['mustatir','ضمير مستتر'],['istifham','اسم استفهام'],['zarf','ظرف']];
+const HKS = [['nafy','حرف نفي'],['nida','حرف نداء'],['istithna','حرف استثناء'],['nasikh','حرف ناسخ'],['atf','حرف عطف'],['jarr','حرف جر'],['nasb','حرف نصب'],['jazm','حرف جزم'],['istifham','حرف استفهام']];
+const TYPES = [['noun','اسم معرب'],['mabni','اسم مبني'],['madi','فعل ماضٍ'],['mudari','فعل مضارع'],['amr','فعل أمر'],['harf','حرف']];
+const opt = (v,l,sel) => `<option value="${v}"${v===sel?' selected':''}>${l}</option>`;
+const fnOpts = (sel,only) => Object.keys(GROUPS).filter(g=>!only||g===only).map(g=>`<optgroup label="${GROUPS[g][0]}">${GROUPS[g][1].map(f=>opt(g+'.'+f[0], f[2]||f[1], sel)).join('')}</optgroup>`).join('');
+const vkey = u => u.type==='madi'?'madi':u.type==='amr'?'amr':(u.mode==='mabni'?'mudari_mabni':u.mode);
+const expNoun = (g,m) => (NOUN_SIGNS[g].find(s=>s[2].includes(m))||[])[0];
+const expVerb = (k,c) => VERB_SIGNS[k].find(s=>s[3].includes(c));
+let E = [];
+function fixUnit(u){
+  if (u.type==='noun'){ const g = u.fn.split('.')[0]; u.sign = expNoun(g,u.m) || NOUN_SIGNS[g][0][0]; }
+  if (u.type==='madi'||u.type==='mudari'||u.type==='amr'){ const k = vkey(u), e = expVerb(k,u.c); u.sg = (e||VERB_SIGNS[k][0])[0]; }
+}
+function newUnit(t){ const u = {t,type:'noun',fn:'raf.mubtada',m:'mufrad',kind:'mattasil',cs:'raf',mfn:'raf.mubtada',mode:'raf',c:'sahih',hk:'jarr'}; fixUnit(u); return u; }
+function unitData(u){
+  if (u.type==='noun'){ const g = u.fn.split('.')[0]; return {t:u.t, m:u.m, a:[u.fn,'hd.'+g,'sg.'+g+'.'+u.sign]}; }
+  if (u.type==='mabni'){ const a = ['mb.'+u.kind,'st.mahal','sg.mahal.'+u.cs]; if (u.kind!=='zarf' && u.mfn) a.push(u.mfn); return {t:u.t,a}; }
+  if (u.type==='harf') return {t:u.t, a:['hf.'+u.hk,'hf.mabni','hf.nomahal']};
+  const k = vkey(u), st = u.type==='madi'?'st.madi':u.type==='amr'?'st.amr':(u.mode==='mabni'?'st.mudari_mabni':'st.'+u.mode+'_bi');
+  return {t:u.t, c:u.c, a:['vb.'+(u.type==='mudari'?'mudari':u.type), st, 'sv.'+k+'.'+u.sg]};
+}
+function reviewAll(){
+  const has = f => E.some(u=>f(u)), fnOf = u => u.type==='noun'?u.fn.split('.')[1]:(u.type==='mabni'&&u.kind!=='zarf'?(u.mfn||'').split('.')[1]:'');
+  return E.map((u,i)=>{
+    const er=[], wn=[], pv = E[i-1];
+    if (u.type==='noun'){ const g = u.fn.split('.')[0], sg = PIECES['sg.'+g+'.'+u.sign];
+      if (!sg || !sg.ok.includes(u.m)){ er.push(`علامة ${CASE_AR[g]} لـ«${M_LABEL[u.m]}» هي ${PIECES['sg.'+g+'.'+expNoun(g,u.m)].label} وليست ${sg?sg.label:'غير محددة'}.`); } }
+    if (u.type==='madi'||u.type==='mudari'||u.type==='amr'){ const k = vkey(u), sg = PIECES['sv.'+k+'.'+u.sg], e = expVerb(k,u.c);
+      if (!e) er.push(`حال الفعل («${C_LABEL[u.c]}») لا تناسب هذه الحالة الإعرابية. اختر حالة أخرى.`);
+      else if (!sg || !sg.ok.includes(u.c)) er.push(`الفعل «${C_LABEL[u.c]}» علامته ${e[1]} وليست ${sg?sg.label:'غير محددة'}.`); }
+    if (u.type==='mabni' && u.kind!=='zarf' && u.mfn && u.mfn.split('.')[0]!==u.cs) er.push('وظيفة الاسم المبني يجب أن تناسب محله من الإعراب.');
+    const f = fnOf(u), anyVerb = has(x=>['madi','mudari','amr'].includes(x.type));
+    if (['fail','naib','maful_bih','maful_mutlaq','maful_ajlih','hal','ism_nasikh','khabar_fil'].includes(f) && !anyVerb) wn.push('هذه الوظيفة تحتاج فعلًا في الجملة.');
+    if (['khabar'].includes(f) && !has(x=>fnOf(x)==='mubtada')) wn.push('الخبر يحتاج مبتدأً في الجملة.');
+    if (['khabar_harf','ism_harf'].includes(f) && !has(x=>x.type==='harf'&&x.hk==='nasikh')) wn.push('هذه الوظيفة تحتاج حرفًا ناسخًا (إنّ وأخواتها).');
+    if (f==='mubtada2' && !has(x=>fnOf(x)==='mubtada')) wn.push('المبتدأ الثاني يحتاج مبتدأً أول.');
+    if (f==='khabar_m2' && !has(x=>fnOf(x)==='mubtada2')) wn.push('خبر المبتدأ الثاني يحتاج مبتدأً ثانيًا.');
+    if (f==='maful_bih2' && !has(x=>fnOf(x)==='maful_bih')) wn.push('المفعول به الثاني يحتاج مفعولًا به أول.');
+    if (f==='ism_majrur' && !(pv && pv.type==='harf' && pv.hk==='jarr')) wn.push('الاسم المجرور يأتي بعد حرف جر.');
+    if (f==='mudaf_ilayh' && !(i>0 && ['noun','mabni'].includes(pv.type))) wn.push('المضاف إليه يأتي بعد اسم.');
+    if (['nat','nat2','tawkid_manawi','tawkid_lafzi','badal'].includes(f) && !(i>0 && ['noun','mabni'].includes(pv.type))) wn.push('هذه الوظيفة تتبع اسمًا قبلها.');
+    if (f==='munada' && !(pv && pv.type==='harf' && pv.hk==='nida')) wn.push('المنادى يأتي بعد حرف نداء.');
+    if (f==='mustathna' && !(pv && pv.type==='harf' && pv.hk==='istithna')) wn.push('المستثنى يأتي بعد أداة استثناء.');
+    if (f==='matuf' && !(i>0 && pv.type==='harf' && pv.hk==='atf')) wn.push('المعطوف يأتي بعد حرف عطف.');
+    if (u.type==='mudari'){
+      if (u.mode==='nasb' && !(pv && pv.type==='harf' && pv.hk==='nasb')) wn.push('المضارع المنصوب يسبقه حرف نصب.');
+      if (u.mode==='jazm' && !(pv && pv.type==='harf' && pv.hk==='jazm') && !has(x=>x.type==='mabni'&&x.kind==='shart')) wn.push('المضارع المجزوم يسبقه حرف جزم أو اسم شرط.');
+      if (u.mode==='raf' && pv && pv.type==='harf' && ['nasb','jazm'].includes(pv.hk)) wn.push('قبله حرف ينصب أو يجزم، فهل هو مرفوع حقًا؟');
+    }
+    return {er,wn,parse:parse(unitData(u))};
+  });
+}
+function ctrlHtml(u,i){
+  const sel = (f,list,val,label)=>`<label>${label}<select data-i="${i}" data-f="${f}">${list.map(x=>opt(x[0],x[1],val)).join('')}</select></label>`;
+  let h = sel('type',TYPES,u.type,'نوع الكلمة');
+  if (u.type==='noun'){ const g = u.fn.split('.')[0];
+    h += `<label>الوظيفة<select data-i="${i}" data-f="fn">${fnOpts(u.fn)}</select></label>` + sel('m',Object.keys(M_LABEL).map(k=>[k,M_LABEL[k]]),u.m,'صورة الكلمة') + sel('sign',NOUN_SIGNS[g].map(s=>[s[0],s[1]]),u.sign,'العلامة'); }
+  if (u.type==='mabni'){ h += sel('kind',KINDS,u.kind,'نوعه') + sel('cs',[['raf','رفع'],['nasb','نصب'],['jarr','جر']],u.cs,'في محل');
+    if (u.kind!=='zarf') h += `<label>وظيفته<select data-i="${i}" data-f="mfn">${fnOpts(u.mfn,u.cs)}</select></label>`; }
+  if (u.type==='harf') h += sel('hk',HKS,u.hk,'نوع الحرف');
+  if (['madi','mudari','amr'].includes(u.type)){ const k = vkey(u);
+    if (u.type==='mudari') h += sel('mode',[['raf','مرفوع'],['nasb','منصوب'],['jazm','مجزوم'],['mabni','مبني']],u.mode,'حالته');
+    h += sel('c',Object.keys(C_LABEL).map(x=>[x,C_LABEL[x]]),u.c,'حال الفعل') + sel('sg',VERB_SIGNS[k].map(s=>[s[0],s[1]]),u.sg,'العلامة'); }
+  return h;
+}
+function edRender(){
+  const R = reviewAll();
+  $('#edRows').innerHTML = E.map((u,i)=>`<div class="urow"><div class="uw">${u.t}</div><div class="ctrls">${ctrlHtml(u,i)}</div><div class="ust">${R[i].er.map(x=>`<div class="er">✖ ${x}</div>`).join('')}${R[i].wn.map(x=>`<div class="wn">⚠ ${x}</div>`).join('')}${R[i].er.length?'':`<div class="ok">✔ ${u.t} : ${R[i].parse}</div>`}</div></div>`).join('');
+  const nErr = R.reduce((a,r)=>a+r.er.length,0), nWn = R.reduce((a,r)=>a+r.wn.length,0);
+  $('#edSum').innerHTML = E.length ? `<div>${nErr?`✖ ${nErr} خطأ يجب تصحيحه`:'✔ إعراب كل الكلمات مطابق لقواعد اللوحة'}${nWn?` — ⚠ ${nWn} تنبيه للمراجعة`:''}</div>` : '';
+  $('#edSave').style.display = E.length && !nErr ? '' : 'none';
+}
+function edSaved(){ $('#edSaved').innerHTML = CUSTOM.length ? CUSTOM.map((s,i)=>`<span>${s.words.map(w=>w.map(u=>u.t).join('')).join(' ')}<button data-del="${i}" aria-label="حذف">×</button></span>`).join('') : '<small>لا توجد جمل محفوظة بعد.</small>'; }
+function persist(){ store.set('ebr-custom', JSON.stringify(CUSTOM)); }
+function syncCustom(){ for (let i=SENTENCES.length-1;i>=0;i--) if (SENTENCES[i].lv===4) SENTENCES.splice(i,1); CUSTOM.forEach(s=>SENTENCES.push(s)); }
+try{ const v = JSON.parse(store.get('ebr-custom','[]')); if (Array.isArray(v)) CUSTOM = v.filter(s=>s&&s.words&&s.words.every(w=>w.every(u=>u.a&&u.a.every(id=>PIECES[id])))); }catch(e){} syncCustom();
+$('#bEd').onclick = ()=>{ edSaved(); $('#ed').classList.add('on'); $('#edIn').focus(); };
+$('#edClose').onclick = ()=>$('#ed').classList.remove('on');
+$('#edSplit').onclick = ()=>{ const txt = $('#edIn').value.trim(); if (!txt){ E=[]; edRender(); return; }
+  E = []; txt.split(/\s+/).forEach((w,wi)=>w.split('|').filter(Boolean).forEach(p=>{ const u = newUnit(p); u.w = wi; E.push(u); })); edRender(); };
+$('#edRows').addEventListener('change', e=>{ const t = e.target; if (!t.dataset.f) return; const u = E[+t.dataset.i], f = t.dataset.f; u[f] = t.value;
+  if (f==='type'){ if (u.type==='mudari'){ u.mode='raf'; u.c='sahih'; } else u.c = 'sahih'; if (u.type==='madi') u.c='sahih'; }
+  if (f==='mode'){ u.c = u.mode==='mabni' ? 'niswa' : 'sahih'; }
+  if (f==='cs'){ u.mfn = (GROUPS[u.cs][1][0] ? u.cs+'.'+GROUPS[u.cs][1][0][0] : ''); }
+  if (['type','fn','m','mode','c'].includes(f)) fixUnit(u);
+  edRender(); });
+$('#edSave').onclick = ()=>{ const R = reviewAll(); if (R.some(r=>r.er.length)) return;
+  const words = []; E.forEach(u=>{ (words[u.w] = words[u.w]||[]).push(unitData(u)); });
+  CUSTOM.push({lv:4, words:words.filter(Boolean)}); persist(); syncCustom(); $('#ed').classList.remove('on');
+  S.lv = 4; $$('#lvseg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lv==='4')); load(levelList().length-1); };
+$('#edSaved').addEventListener('click', e=>{ const d = e.target.dataset.del; if (d===undefined) return; CUSTOM.splice(+d,1); persist(); syncCustom(); edSaved(); if (S.lv===4) load(0); });
+
+load(0);
+})();
+</script>
+</body></html>
